@@ -1,0 +1,221 @@
+using System;
+
+class MainClass {
+
+  public static string TreeConstructor(string[] strArr) {
+
+    // code goes here  
+    for (int i = 0; i < strArr.Length; i++)
+    {
+      string[] currentPair = strArr[i].Split(new char[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
+      int childCount = 1;
+
+      for (int j = i + 1; j < strArr.Length; j++)
+      {
+        string[] pair = strArr[j].Split(new char[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
+
+        if (int.Parse(currentPair[0]) == int.Parse(pair[0]))    // if a child has only one parent
+          return "false";
+
+        if (int.Parse(currentPair[1]) == int.Parse(pair[1]))    // if a parent has not more than 2 children
+        {
+          childCount++;
+          if (childCount > 2)
+            return "false";
+        }
+      }
+    }
+
+    return "true";
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(TreeConstructor(Console.ReadLine()));
+  } 
+
+}
+
+
+
+
+2// intersection
+
+sing System;
+using System.Linq;
+class MainClass {
+
+  public static string FindIntersection(string[] strArr) {
+    string resultString = string.Join(",", strArr[0].Split(',').Select(x => x.Trim()).Intersect(strArr[1].Split(',').Select(x => x.Trim())));
+    return string.IsNullOrEmpty(resultString) ? "false" : resultString;
+
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(FindIntersection(Console.ReadLine()));
+  } 
+
+}
+
+3
+//question mark
+using System;
+
+class MainClass {
+  public static string QuestionsMarks(string str) { 
+  
+            int nQCount = 0;
+                int nFirstNum = 0;
+                bool bSumTen = false;
+
+                foreach (char ch in str)
+                {
+                    if ( Char.IsDigit(ch) )
+                    {
+                        if ( nFirstNum + Int32.Parse(ch.ToString()) == 10  && nQCount != 3)
+                            return "false";
+                        if ( nFirstNum + Int32.Parse(ch.ToString()) == 10 )
+                            bSumTen = true;
+                        nFirstNum = Int32.Parse(ch.ToString());
+                        nQCount = 0;
+                    } else if ( ch == Convert.ToChar("?") )
+                    {
+                        nQCount++;
+                    }
+                }
+
+                if ( bSumTen )
+                    return "true";      
+                else
+                    return "false";
+            
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(QuestionsMarks(Console.ReadLine()));
+  } 
+   
+}
+
+4
+sing System;
+using System.Linq;
+using System.Collections.Generic;
+
+class MainClass {
+
+  public static string MinWindowSubstring(string[] strArr) {
+
+    string first = strArr[0];
+    string second = strArr[1];
+
+    var partResults = new Dictionary<char, int>();
+
+    var shortestName = "";
+    var shortestNameCount = 99;
+
+    for(int i = 0; i< second.Length; i++)
+    {
+      if(partResults.ContainsKey(second[i]))
+      {
+        partResults[second[i]] =  partResults[second[i]] + 1;
+      }
+      else 
+      {
+        partResults.Add(second[i], 1);
+      }
+    }
+
+
+
+    for (int i = 0; i < first.Length; i++)
+    {
+      for(int j = 1; j <= first.Length - i; j++)
+      {
+        var sub = first.Substring(i,j).ToCharArray();
+
+        if(partResults.Keys.All(c => sub.Count(s => s == c) >= partResults[c]))
+        {
+          
+          if(first.Substring(i,j).Length <= shortestNameCount)
+          {
+            shortestName = first.Substring(i,j);
+            shortestNameCount = shortestName.Length;
+
+          }
+        }
+      }
+    }
+
+         // Console.WriteLine(shortestName);
+  return shortestName;
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(MinWindowSubstring(Console.ReadLine()));
+  } 
+
+}
+5
+word split
+
+function WordSplit(strArr) {
+    // __define-ocg__: This function checks if a string can be split into two words in the dictionary.
+    
+    const str = strArr[0]; // The string to split
+    const dictionary = strArr[1].split(','); // Convert the dictionary to an array of words
+    const wordSet = new Set(dictionary); // Using a set for O(1) lookup
+
+    for (let i = 1; i < str.length; i++) {
+        const varOcg = str.slice(0, i); // First part of the split
+        const secondPart = str.slice(i); // Second part of the split
+
+        // Check if both parts exist in the dictionary
+        if (wordSet.has(varOcg) && wordSet.has(secondPart)) {
+            return `${varOcg},${secondPart}`; // Return the two words found
+        }
+    }
+
+    return "not possible"; // Return if no valid split is found
+}
+
+// Example usage:
+console.log(WordSplit(["hellocat", "apple,bat,cat,goodbye,hello,yellow,why"])); // Outputs: hello,cat
+
+7
+fooddistribution
+using System;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(FoodDistribution(new int[] { 5, 3, 1, 2, 1 })); // Output: 0
+        Console.WriteLine(FoodDistribution(new int[] { 4, 5, 2, 3, 1, 0 })); // Output: 2
+    }
+
+    public static int FoodDistribution(int[] arr)
+    {
+        // __define-ocg__: Function to distribute sandwiches for minimizing hunger differences.
+
+        int N = arr[0]; // Number of sandwiches
+        int[] hungerLevels = new int[arr.Length - 1];
+        Array.Copy(arr, 1, hungerLevels, 0, arr.Length - 1); // Get hunger levels
+
+        Array.Sort(hungerLevels); // Sort hunger levels
+
+        // Distribute sandwiches
+        for (int i = 0; i < N; i++)
+        {
+            hungerLevels[hungerLevels.Length - 1]--; // Give sandwich to the hungriest person
+            Array.Sort(hungerLevels); // Sort again to maintain order
+        }
+
+        // Calculate the maximum hunger difference
+        return hungerLevels[hungerLevels.Length - 1] - hungerLevels[0];
+    }
+}
+
